@@ -18,14 +18,18 @@ const MyPhonebook = () => {
   const isDuplicate = ({ name, number }) => {
     return contacts.some(
       (contact) =>
-        contact.name.toLowerCase() === name.toLowerCase() &&
+        contact.name.toLowerCase() === name.toLowerCase() ||
         contact.number.toLowerCase() === number.toLowerCase()
     );
   };
+  
 
   const addContact = (data) => {
-    if (isDuplicate(data)) {
-      return alert(`Contact with ${data.name} and ${data.number} already in the list`);
+    const { name, number } = data;
+
+    if (isDuplicate({ name, number })) {
+      alert(`Contact with ${name} and ${number} already in the list`);
+      return;
     }
 
     setContacts((prevContacts) => {
@@ -36,6 +40,7 @@ const MyPhonebook = () => {
       return [...prevContacts, newContact];
     });
   };
+
 
   const deleteContact = (id) => {
     setContacts((prevContacts) => prevContacts.filter((contact) => contact.id !== id));
