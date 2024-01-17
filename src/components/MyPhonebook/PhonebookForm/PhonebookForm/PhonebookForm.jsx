@@ -1,61 +1,57 @@
-import { Component } from 'react';
+import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { Form, FormGroup, Label, Input, SubmitButton } from './PhonebookForm.styled';
 
-class PhonebookForm extends Component {
-  PhoneNameId = nanoid();
-  PhoneNumberId = nanoid();
+const PhonebookForm = ({ onSubmit }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  state = {
-    name: '',
-    number: '',
+  const PhoneNameId = nanoid();
+  const PhoneNumberId = nanoid();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'number') {
+      setNumber(value);
+    }
   };
 
-  handleChange = ({ target }) => {
-    const { name, value } = target;
-    this.setState({
-      [name]: value,
-    });
-  };
-
-  handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    this.props.onSubmit({...this.state});
-    this.setState({
-      name: '',
-      number: '',
-    });
+    onSubmit({ name, number });
+    setName('');
+    setNumber('');
   };
-  render() {
-    const { PhoneNameId, PhoneNumberId, handleSubmit, handleChange } = this;
-    const { name, number } = this.state;
-    return (
-      <Form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Label htmlFor={PhoneNameId}>Name</Label>
-          <Input
-            value={name}
-            onChange={handleChange}
-            id={PhoneNameId}
-            type="text"
-            name="name"
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor={PhoneNumberId}>Number</Label>
-          <Input
-            value={number}
-            onChange={handleChange}
-            id={PhoneNumberId}
-            type="tel"
-            name="number"
-            required
-          />
-        </FormGroup>
-        <SubmitButton type="submit">Add contact</SubmitButton>
-      </Form>
-    );
-  }
-}
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <FormGroup>
+        <Label htmlFor={PhoneNameId}>Name</Label>
+        <Input
+          value={name}
+          onChange={handleChange}
+          id={PhoneNameId}
+          type="text"
+          name="name"
+          required
+        />
+      </FormGroup>
+      <FormGroup>
+        <Label htmlFor={PhoneNumberId}>Number</Label>
+        <Input
+          value={number}
+          onChange={handleChange}
+          id={PhoneNumberId}
+          type="tel"
+          name="number"
+          required
+        />
+      </FormGroup>
+      <SubmitButton type="submit">Add contact</SubmitButton>
+    </Form>
+  );
+};
+
 export default PhonebookForm;
